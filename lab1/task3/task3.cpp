@@ -33,9 +33,47 @@ SafeArray createArray(int size)
     return arr;
 }
 
+/**
+ * @brief Безопасный доступ к элементу массива по индексу.
+ * @param arr   Ссылка на SafeArray, к которому обращаемся.
+ * @param index Индекс запрашиваемого элемента.
+ * @return Ссылка на элемент arr.data[index], если индекс корректен;
+ *         иначе — ссылка на статическую переменную-заглушку.
+ *
+ * Благодаря тому, что функция возвращает int&, её можно использовать
+ * слева от знака "=", т.е. как lvalue: getElement(arr, i) = 999;
+ * Если индекс некорректен, программа не падает: печатается сообщение
+ * об ошибке и возвращается ссылка на "заглушку".
+ */
+int& getElement(SafeArray& arr, int index)
+{
+    static int dummy = 0; // статическая переменная-заглушка
+
+    if (index < 0 || index >= arr.size)
+    {
+        std::cout << "Ошибка: индекс " << index
+                  << " выходит за границы массива размером " << arr.size << std::endl;
+        dummy = 0;
+        return dummy;
+    }
+
+    return arr.data[index];
+}
+
 int main()
 {
     SafeArray myArr = createArray(5);
+
+    for (int i = 0; i < myArr.size; ++i)
+    {
+        getElement(myArr, i) = (i + 1) * 10; // заполняем массив: 10 20 30 40 50
+    }
+
+    // Демонстрация использования getElement слева от знака "="
+    getElement(myArr, 2) = 999;
+
+    // Попытка выйти за границы массива — программа не падает
+    getElement(myArr, 100) = 12345;
 
     delete[] myArr.data;
     myArr.data = nullptr;
