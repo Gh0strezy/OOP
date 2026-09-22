@@ -45,6 +45,50 @@ void fillMatrix(int** matrix, int rows, int cols)
     }
 }
 
+/**
+ * @brief Красиво выводит матрицу оценок на экран.
+ * @param matrix      Матрица для вывода.
+ * @param rows        Количество строк.
+ * @param cols        Количество столбцов.
+ * @param showBorders Если true — вокруг матрицы рисуется рамка из '*'.
+ *                     По умолчанию true.
+ * @param title       Заголовок, который печатается перед матрицей.
+ *                     По умолчанию "Matrix".
+ */
+void printMatrix(int** matrix, int rows, int cols, bool showBorders = true, std::string title = "Matrix")
+{
+    std::cout << title << std::endl;
+
+    int width = cols * 3 + 1;
+
+    if (showBorders)
+    {
+        for (int k = 0; k < width; ++k) std::cout << '*';
+        std::cout << std::endl;
+    }
+
+    for (int i = 0; i < rows; ++i)
+    {
+        if (showBorders) std::cout << "* ";
+
+        for (int j = 0; j < cols; ++j)
+        {
+            std::cout << matrix[i][j] << "  ";
+        }
+
+        if (showBorders) std::cout << '*';
+        std::cout << std::endl;
+    }
+
+    if (showBorders)
+    {
+        for (int k = 0; k < width; ++k) std::cout << '*';
+        std::cout << std::endl;
+    }
+
+    std::cout << std::endl;
+}
+
 int main()
 {
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
@@ -54,6 +98,15 @@ int main()
 
     int** grades = allocateMatrix(students, subjects);
     fillMatrix(grades, students, subjects);
+
+    // 1. Вызов без дополнительных параметров (используются значения по умолчанию)
+    printMatrix(grades, students, subjects);
+
+    // 2. Вызов только с заголовком
+    printMatrix(grades, students, subjects, true, "Оценки студентов");
+
+    // 3. Вызов со всеми параметрами (без рамки)
+    printMatrix(grades, students, subjects, false, "Оценки студентов (без рамки)");
 
     for (int i = 0; i < students; ++i)
     {
