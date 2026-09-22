@@ -24,12 +24,28 @@ void fillArray(int (&arr)[ARRAY_SIZE])
     }
 }
 
+/**
+ * @brief Выводит массив на экран через range-based for и auto.
+ * @param arr Ссылка на константный массив (только чтение, менять не нужно).
+ */
+void printArray(const int (&arr)[ARRAY_SIZE])
+{
+    for (const auto& x : arr)
+    {
+        std::cout << x << ' ';
+    }
+    std::cout << std::endl;
+}
+
 int main()
 {
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
 
     int numbers[ARRAY_SIZE];
     fillArray(numbers);
+
+    std::cout << "Исходный массив:" << std::endl;
+    printArray(numbers);
 
     return 0;
 }
