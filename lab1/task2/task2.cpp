@@ -17,7 +17,12 @@
  *             чтобы в дальнейшем функция могла заменить сам указатель
  *             на новый блок памяти, и это было видно вызывающему коду.
  * @param size Текущий размер массива, на который указывает arr.
- * @return Индекс первого отрицательного элемента, либо -1, если такого нет.
+ * @return Новый размер массива после возможной обрезки.
+ *
+ * Если отрицательный элемент найден, создаётся новый динамический
+ * массив, в который копируются все элементы до него, старая память
+ * освобождается через delete[], а указатель arr переставляется на
+ * новый массив.
  */
 int process(int*& arr, int size)
 {
@@ -35,13 +40,23 @@ int process(int*& arr, int size)
     if (negativeIndex == -1)
     {
         std::cout << "Отрицательных элементов не найдено, массив не изменён." << std::endl;
-    }
-    else
-    {
-        std::cout << "Первый отрицательный элемент найден на позиции " << negativeIndex << std::endl;
+        return size;
     }
 
-    return negativeIndex;
+    std::cout << "Первый отрицательный элемент найден на позиции " << negativeIndex << std::endl;
+
+    int newSize = negativeIndex;
+    int* newArr = new int[newSize];
+
+    for (int i = 0; i < newSize; ++i)
+    {
+        newArr[i] = arr[i];
+    }
+
+    delete[] arr;  // освобождаем старую память
+    arr = newArr;  // указатель теперь смотрит на новый массив
+
+    return newSize;
 }
 
 int main()
@@ -65,7 +80,14 @@ int main()
         std::cin >> arr[i];
     }
 
-    process(arr, n);
+    int currentSize = process(arr, n);
+
+    std::cout << "Результат:" << std::endl;
+    for (int i = 0; i < currentSize; ++i)
+    {
+        std::cout << arr[i] << ' ';
+    }
+    std::cout << std::endl;
 
     delete[] arr;
     arr = nullptr;
