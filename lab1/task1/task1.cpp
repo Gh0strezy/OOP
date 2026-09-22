@@ -59,6 +59,21 @@ void swapElements(int (&arr)[ARRAY_SIZE], int i, int j)
     arr[j] = temp;
 }
 
+/**
+ * @brief Умножает каждый элемент массива на 2.
+ * @param arr Ссылка на массив.
+ *
+ * Используется range-based for с неконстантной ссылкой int&, поэтому
+ * изменение x в цикле меняет реальный элемент массива.
+ */
+void multiplyByTwo(int (&arr)[ARRAY_SIZE])
+{
+    for (int& x : arr)
+    {
+        x *= 2;
+    }
+}
+
 int main()
 {
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
@@ -71,6 +86,10 @@ int main()
 
     std::cout << "Меняем местами элементы с индексами 0 и 9:" << std::endl;
     swapElements(numbers, 0, 9);
+    printArray(numbers);
+
+    std::cout << "Умножаем все элементы на 2:" << std::endl;
+    multiplyByTwo(numbers);
     printArray(numbers);
 
     return 0;
