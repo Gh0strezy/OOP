@@ -89,6 +89,25 @@ void printMatrix(int** matrix, int rows, int cols, bool showBorders = true, std:
     std::cout << std::endl;
 }
 
+/**
+ * @brief Освобождает память, выделенную под матрицу.
+ * @param matrix Матрица для освобождения.
+ * @param rows   Количество строк (нужно, чтобы знать, сколько
+ *               вложенных массивов освобождать).
+ *
+ * Сначала освобождаются вложенные массивы (каждая строка), а затем
+ * массив указателей на них — именно в таком порядке, иначе
+ * получится утечка памяти.
+ */
+void freeMatrix(int** matrix, int rows)
+{
+    for (int i = 0; i < rows; ++i)
+    {
+        delete[] matrix[i];
+    }
+    delete[] matrix;
+}
+
 int main()
 {
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
@@ -108,11 +127,8 @@ int main()
     // 3. Вызов со всеми параметрами (без рамки)
     printMatrix(grades, students, subjects, false, "Оценки студентов (без рамки)");
 
-    for (int i = 0; i < students; ++i)
-    {
-        delete[] grades[i];
-    }
-    delete[] grades;
+    freeMatrix(grades, students);
+    grades = nullptr;
 
     return 0;
 }
