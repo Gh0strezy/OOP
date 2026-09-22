@@ -60,6 +60,19 @@ int& getElement(SafeArray& arr, int index)
     return arr.data[index];
 }
 
+/**
+ * @brief Выводит содержимое SafeArray на экран.
+ * @param arr Константная ссылка на SafeArray (печать не меняет данные).
+ */
+void printSafe(const SafeArray& arr)
+{
+    for (int i = 0; i < arr.size; ++i)
+    {
+        std::cout << arr.data[i] << ' ';
+    }
+    std::cout << std::endl;
+}
+
 int main()
 {
     SafeArray myArr = createArray(5);
@@ -69,8 +82,13 @@ int main()
         getElement(myArr, i) = (i + 1) * 10; // заполняем массив: 10 20 30 40 50
     }
 
+    std::cout << "Исходный массив:" << std::endl;
+    printSafe(myArr);
+
     // Демонстрация использования getElement слева от знака "="
     getElement(myArr, 2) = 999;
+    std::cout << "После getElement(myArr, 2) = 999:" << std::endl;
+    printSafe(myArr);
 
     // Попытка выйти за границы массива — программа не падает
     getElement(myArr, 100) = 12345;
