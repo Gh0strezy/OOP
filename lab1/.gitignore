@@ -5,3 +5,6 @@ task3/task3
 task4/task4
 *.o
 *.out
+
+# сгенерированная doxygen-документация
+docs/

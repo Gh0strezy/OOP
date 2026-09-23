@@ -1,0 +1,47 @@
+# Doxyfile — конфигурация для генерации документации проекта.
+# Запуск: doxygen Doxyfile (из этой папки, lab1/)
+# Результат появится в lab1/docs/html/index.html
+
+#---------------------------------------------------------------------------
+# Основные настройки проекта
+#---------------------------------------------------------------------------
+PROJECT_NAME           = "Laboratory Work — Pointers & References in C++"
+PROJECT_BRIEF          = "Задания 1-4: работа с массивами, указателями и ссылками"
+OUTPUT_LANGUAGE        = Russian
+OUTPUT_DIRECTORY       = docs
+
+#---------------------------------------------------------------------------
+# Что документировать
+#---------------------------------------------------------------------------
+INPUT                  = task1 task2 task3 task4 README.md
+FILE_PATTERNS           = *.cpp *.h *.hpp
+RECURSIVE               = YES
+USE_MDFILE_AS_MAINPAGE  = README.md
+
+EXTRACT_ALL             = YES
+EXTRACT_PRIVATE         = YES
+EXTRACT_STATIC          = YES
+EXTRACT_LOCAL_METHODS   = YES
+
+#---------------------------------------------------------------------------
+# Формат вывода
+#---------------------------------------------------------------------------
+GENERATE_HTML           = YES
+GENERATE_LATEX          = NO
+GENERATE_TREEVIEW       = YES
+HTML_OUTPUT              = html
+
+#---------------------------------------------------------------------------
+# Разное
+#---------------------------------------------------------------------------
+QUIET                   = NO
+WARNINGS                 = YES
+WARN_IF_UNDOCUMENTED     = YES
+SOURCE_BROWSER           = YES
+INLINE_SOURCES           = YES
+
+# Если установлен Graphviz (dot), можно включить построение графов вызовов:
+# HAVE_DOT               = YES
+# CALL_GRAPH              = YES
+# CALLER_GRAPH             = YES
+HAVE_DOT                 = NO
