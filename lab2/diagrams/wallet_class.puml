@@ -1,0 +1,83 @@
+@startuml wallet_class
+title Диаграмма классов: электронный кошелёк (Wallet)
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+
+enum Currency <<enum class>> {
+  RUB
+  USD
+  EUR
+}
+
+class Wallet {
+  - owner : Owner
+  - balance : double
+  - currency : Currency
+  - transactionCount : int
+  - blocked : bool
+  - {static} objectCount : int
+  __ Конструкторы / деструктор __
+  + Wallet()
+  + Wallet(owner : const Owner&, currency : Currency)
+  + Wallet(owner : const Owner&, initialBalance : double, currency : Currency)
+  + ~Wallet()
+  __ Методы чтения (const) __
+  + getOwner() : const Owner&
+  + getBalance() : double
+  + getCurrency() : Currency
+  + getTransactionCount() : int
+  + isBlocked() : bool
+  + printInfo() : void
+  __ Методы изменения состояния __
+  + deposit(amount : double) : bool
+  + withdraw(amount : double) : bool
+  + transferTo(other : Wallet&, amount : double) : bool
+  + block() : void
+  + unblock() : void
+  __ Статистика класса __
+  + {static} getObjectCount() : int
+}
+
+class Owner {
+  - name : std::string
+  - email : std::string
+  - {static} isValidEmail(value : const std::string&) : bool
+  __ Конструкторы __
+  + Owner()
+  + Owner(ownerName : const std::string&)
+  + Owner(ownerName : const std::string&, ownerEmail : const std::string&)
+  __ Методы чтения (const) __
+  + getName() : std::string
+  + getEmail() : std::string
+  + hasEmail() : bool
+  __ Методы изменения состояния __
+  + changeEmail(newEmail : const std::string&) : bool
+}
+
+class "currencyToString()" as CurrencyToString <<function>> {
+  + currencyToString(currency : Currency) : std::string
+}
+
+Wallet "1" *-- "1" Owner : owner (композиция)
+Wallet --> Currency : currency
+Wallet ..> Wallet : transferTo(other)
+CurrencyToString ..> Currency : использует
+Wallet ..> CurrencyToString : printInfo() использует
+
+note right of Wallet
+  **Инварианты:**
+  1. balance >= 0
+  2. amount > 0 в deposit/withdraw/transferTo
+  3. withdraw/transferTo запрещены при blocked == true
+  4. amount <= balance при withdraw/transferTo
+  5. transferTo только между кошельками одной валюты
+end note
+
+note right of Owner
+  **Инварианты Owner:**
+  1. имя не пустое
+  2. email пустой или корректный
+end note
+
+@enduml
