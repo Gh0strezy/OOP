@@ -28,5 +28,27 @@ int main()
     w2.printInfo();
     w3.printInfo();
 
+    std::cout << std::endl << "=== Корректные операции ===" << std::endl;
+    w1.deposit(1000.0);
+    w2.deposit(200.0);
+    w3.withdraw(100.0);
+    w2.transferTo(w3, 50.0); // перевод между двумя кошельками одной валюты (USD)
+
+    std::cout << std::endl << "=== Некорректные операции ===" << std::endl;
+    w1.deposit(-50.0);        // отрицательная сумма — должно быть отклонено
+    w2.withdraw(100000.0);    // недостаточно средств — должно быть отклонено
+    w3.block();
+    w3.deposit(10.0);         // кошелёк заблокирован — должно быть отклонено
+    w3.unblock();
+    w1.transferTo(w2, 10.0);  // разные валюты (RUB -> USD) — должно быть отклонено
+    Owner broken("", "wrong-email");  // пустое имя и некорректный email — Owner исправит состояние сам
+    std::cout << "Owner после исправления: " << broken.getName()
+              << ", email указан: " << (broken.hasEmail() ? "да" : "нет") << std::endl;
+
+    std::cout << std::endl << "=== Состояние после операций (объекты сохранили корректность) ===" << std::endl;
+    w1.printInfo();
+    w2.printInfo();
+    w3.printInfo();
+
     return 0;
 }
