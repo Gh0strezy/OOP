@@ -1,0 +1,47 @@
+# Doxyfile — конфигурация Doxygen для лабораторной работы №2 (Wallet).
+# Запуск: doxygen Doxyfile (из этой папки, lab2/)
+# Результат появится в lab2/docs/html/index.html
+
+#---------------------------------------------------------------------------
+# Основные настройки проекта
+#---------------------------------------------------------------------------
+PROJECT_NAME           = "Lab 2 — Electronic Wallet (Wallet)"
+PROJECT_BRIEF          = "Класс Wallet: конструкторы, инварианты, статический счётчик"
+OUTPUT_LANGUAGE        = Russian
+OUTPUT_DIRECTORY       = docs
+
+#---------------------------------------------------------------------------
+# Что документировать
+#---------------------------------------------------------------------------
+INPUT                  = Wallet.h Wallet.cpp main.cpp README.md
+FILE_PATTERNS           = *.cpp *.h *.hpp
+RECURSIVE               = NO
+USE_MDFILE_AS_MAINPAGE  = README.md
+
+EXTRACT_ALL             = YES
+EXTRACT_PRIVATE         = YES
+EXTRACT_STATIC          = YES
+EXTRACT_LOCAL_METHODS   = YES
+
+#---------------------------------------------------------------------------
+# Формат вывода
+#---------------------------------------------------------------------------
+GENERATE_HTML           = YES
+GENERATE_LATEX          = NO
+GENERATE_TREEVIEW       = YES
+HTML_OUTPUT              = html
+
+#---------------------------------------------------------------------------
+# Разное
+#---------------------------------------------------------------------------
+QUIET                   = NO
+WARNINGS                 = YES
+WARN_IF_UNDOCUMENTED     = YES
+SOURCE_BROWSER           = YES
+INLINE_SOURCES           = YES
+
+# Если установлен Graphviz (dot), можно включить построение графов вызовов:
+# HAVE_DOT               = YES
+# CALL_GRAPH              = YES
+# CALLER_GRAPH             = YES
+HAVE_DOT                 = NO
