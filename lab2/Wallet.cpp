@@ -165,3 +165,16 @@ bool Wallet::transferTo(Wallet& other, double amount)
 
 void Wallet::block() { blocked = true; }
 void Wallet::unblock() { blocked = false; }
+
+void Wallet::printInfo() const
+{
+    std::cout << "--- Кошелёк ---" << std::endl;
+    std::cout << "Владелец:     " << owner.getName() << " (email: "
+              << (owner.hasEmail() ? owner.getEmail() : "не указан") << ")" << std::endl;
+    std::cout << "Баланс:       " << balance << " " << currencyToString(currency) << std::endl;
+    std::cout << "Операций:     " << transactionCount << std::endl;
+    std::cout << "Заблокирован: " << (blocked ? "да" : "нет") << std::endl;
+    std::cout << "---------------" << std::endl;
+}
+
+int Wallet::getObjectCount() { return objectCount; }
