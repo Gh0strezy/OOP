@@ -60,3 +60,44 @@ std::string currencyToString(Currency currency)
     }
     return "UNKNOWN";
 }
+
+Wallet::Wallet()
+    : owner(), balance(0.0), currency(Currency::RUB),
+      transactionCount(0), blocked(false)
+{
+    ++objectCount;
+}
+
+Wallet::Wallet(const Owner& owner, Currency currency)
+    : owner(owner), balance(0.0), currency(currency),
+      transactionCount(0), blocked(false)
+{
+    ++objectCount;
+}
+
+Wallet::Wallet(const Owner& owner, double initialBalance, Currency currency)
+    : owner(owner),
+      balance(initialBalance >= 0.0 ? initialBalance : 0.0),
+      currency(currency),
+      transactionCount(0),
+      blocked(false)
+{
+    if (initialBalance < 0.0)
+    {
+        std::cout << "Предупреждение: отрицательный начальный баланс для \""
+                  << owner.getName() << "\" заменён на 0." << std::endl;
+    }
+    ++objectCount;
+}
+
+Wallet::~Wallet()
+{
+    std::cout << "Кошелёк владельца \"" << owner.getName() << "\" уничтожен." << std::endl;
+    --objectCount;
+}
+
+const Owner& Wallet::getOwner() const { return owner; }
+double Wallet::getBalance() const { return balance; }
+Currency Wallet::getCurrency() const { return currency; }
+int Wallet::getTransactionCount() const { return transactionCount; }
+bool Wallet::isBlocked() const { return blocked; }
