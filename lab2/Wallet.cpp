@@ -145,3 +145,23 @@ bool Wallet::withdraw(double amount)
     ++transactionCount;
     return true;
 }
+
+bool Wallet::transferTo(Wallet& other, double amount)
+{
+    if (currency != other.currency)
+    {
+        std::cout << "Ошибка: перевод между разными валютами ("
+                  << currencyToString(currency) << " -> "
+                  << currencyToString(other.currency) << ") не поддерживается." << std::endl;
+        return false;
+    }
+    if (!withdraw(amount))
+    {
+        return false;
+    }
+    other.deposit(amount);
+    return true;
+}
+
+void Wallet::block() { blocked = true; }
+void Wallet::unblock() { blocked = false; }
