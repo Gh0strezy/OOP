@@ -50,5 +50,21 @@ int main()
     w2.printInfo();
     w3.printInfo();
 
+    std::cout << std::endl << "=== Проверка независимости объектов ===" << std::endl;
+    std::cout << "Баланс w2 и w3 до изменения w1:" << std::endl;
+    std::cout << "w2: " << w2.getBalance() << " " << currencyToString(w2.getCurrency()) << std::endl;
+    std::cout << "w3: " << w3.getBalance() << " " << currencyToString(w3.getCurrency()) << std::endl;
+
+    w1.deposit(99999.0); // сильно меняем состояние только w1
+    alice.changeEmail("alice.new@mail.ru"); // меняем исходный Owner — копия внутри w2 не меняется
+
+    std::cout << "После изменения w1 — балансы w2 и w3 не изменились:" << std::endl;
+    std::cout << "w2: " << w2.getBalance() << " " << currencyToString(w2.getCurrency()) << std::endl;
+    std::cout << "w3: " << w3.getBalance() << " " << currencyToString(w3.getCurrency()) << std::endl;
+    std::cout << "Email внутри w2: " << w2.getOwner().getEmail()
+              << " (исходный alice: " << alice.getEmail() << ")" << std::endl;
+
+    std::cout << std::endl << "Текущее количество объектов: " << Wallet::getObjectCount() << std::endl;
+
     return 0;
 }
