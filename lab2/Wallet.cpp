@@ -101,3 +101,47 @@ double Wallet::getBalance() const { return balance; }
 Currency Wallet::getCurrency() const { return currency; }
 int Wallet::getTransactionCount() const { return transactionCount; }
 bool Wallet::isBlocked() const { return blocked; }
+
+bool Wallet::deposit(double amount)
+{
+    if (blocked)
+    {
+        std::cout << "Ошибка: кошелёк \"" << owner.getName()
+                  << "\" заблокирован, пополнение невозможно." << std::endl;
+        return false;
+    }
+    if (amount <= 0.0)
+    {
+        std::cout << "Ошибка: сумма пополнения должна быть положительной." << std::endl;
+        return false;
+    }
+
+    balance += amount;
+    ++transactionCount;
+    return true;
+}
+
+bool Wallet::withdraw(double amount)
+{
+    if (blocked)
+    {
+        std::cout << "Ошибка: кошелёк \"" << owner.getName()
+                  << "\" заблокирован, снятие невозможно." << std::endl;
+        return false;
+    }
+    if (amount <= 0.0)
+    {
+        std::cout << "Ошибка: сумма снятия должна быть положительной." << std::endl;
+        return false;
+    }
+    if (amount > balance)
+    {
+        std::cout << "Ошибка: недостаточно средств на кошельке \""
+                  << owner.getName() << "\"." << std::endl;
+        return false;
+    }
+
+    balance -= amount;
+    ++transactionCount;
+    return true;
+}
