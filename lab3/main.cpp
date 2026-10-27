@@ -51,5 +51,43 @@ int main()
     Matrix r4 = P--;
     std::cout << "r4 = P--  -> r4 = " << r4 << " (старое значение), P = " << P << std::endl;
 
+    // ===== 3. Арифметическое присваивание: +=, -=, *=, /=
+    std::cout << std::endl << "=== 3. Арифметическое присваивание ===" << std::endl;
+    Matrix C = A;
+    std::cout << "C = " << C << ", B = " << B << std::endl;
+    C += B;
+    std::cout << "C += B -> " << C << std::endl;
+    C -= B;
+    std::cout << "C -= B -> " << C << std::endl;
+    C *= B;
+    std::cout << "C *= B -> " << C << std::endl;
+    C /= B;
+    std::cout << "C /= B -> " << C << " (вернулась к A)" << std::endl;
+    std::cout << "C /= Z (деление на нулевую матрицу):" << std::endl;
+    C /= Z;
+    std::cout << "C после отклонённого деления -> " << C << std::endl;
+
+    // ===== 4. Бинарные операторы: +, -, *, / (через +=, -=, *=, /=)
+    std::cout << std::endl << "=== 4. Бинарные арифметические операторы ===" << std::endl;
+    std::cout << "A + B = " << (A + B) << std::endl;
+    std::cout << "A - B = " << (A - B) << std::endl;
+    std::cout << "A * B = " << (A * B) << std::endl;
+    std::cout << "A / B = " << (A / B) << std::endl;
+    std::cout << "A после всех операций не изменилась: " << A << std::endl;
+
+    // ===== 5. Сравнение матриц (по определителю)
+    std::cout << std::endl << "=== 5. Операторы сравнения (по определителю) ===" << std::endl;
+    std::cout << "A = " << A << ", det = " << A.determinant() << std::endl;
+    std::cout << "B = " << B << ", det = " << B.determinant() << std::endl;
+    std::cout << "F = " << F << ", det = " << F.determinant()
+              << " (другие элементы, но тот же определитель, что у A)" << std::endl;
+    std::cout << "A <  B : " << (A < B) << std::endl;
+    std::cout << "A >  B : " << (A > B) << std::endl;
+    std::cout << "A <= F : " << (A <= F) << std::endl;
+    std::cout << "A >= F : " << (A >= F) << std::endl;
+    std::cout << "A == F : " << (A == F) << std::endl;
+    std::cout << "A != F : " << (A != F) << std::endl;
+    std::cout << "A != B : " << (A != B) << std::endl;
+
     return 0;
 }
