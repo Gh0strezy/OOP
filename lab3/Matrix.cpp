@@ -282,3 +282,39 @@ Matrix Matrix::operator--(int)
     shiftAll(-1.0, "-- (постфикс)");
     return old;
 }
+
+Matrix operator+(Matrix lhs, const Matrix& rhs)
+{
+    lhs += rhs;
+    return lhs;
+}
+
+Matrix operator-(Matrix lhs, const Matrix& rhs)
+{
+    lhs -= rhs;
+    return lhs;
+}
+
+Matrix operator*(Matrix lhs, const Matrix& rhs)
+{
+    lhs *= rhs;
+    return lhs;
+}
+
+Matrix operator/(Matrix lhs, const Matrix& rhs)
+{
+    lhs /= rhs;
+    return lhs;
+}
+
+bool operator<(const Matrix& lhs, const Matrix& rhs)  { return lhs.compareByDeterminant(rhs) < 0; }
+bool operator>(const Matrix& lhs, const Matrix& rhs)  { return lhs.compareByDeterminant(rhs) > 0; }
+bool operator<=(const Matrix& lhs, const Matrix& rhs) { return lhs.compareByDeterminant(rhs) <= 0; }
+bool operator>=(const Matrix& lhs, const Matrix& rhs) { return lhs.compareByDeterminant(rhs) >= 0; }
+bool operator==(const Matrix& lhs, const Matrix& rhs) { return lhs.compareByDeterminant(rhs) == 0; }
+bool operator!=(const Matrix& lhs, const Matrix& rhs) { return lhs.compareByDeterminant(rhs) != 0; }
+
+std::ostream& operator<<(std::ostream& os, const Matrix& m)
+{
+    return os << m.toString();
+}
