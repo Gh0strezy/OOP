@@ -244,3 +244,41 @@ Matrix& Matrix::operator/=(const Matrix& rhs)
     record("/= " + rhs.toString() + " => " + toString());
     return *this;
 }
+
+void Matrix::shiftAll(double delta, const std::string& label)
+{
+    for (int i = 0; i < 2; ++i)
+    {
+        for (int j = 0; j < 2; ++j)
+        {
+            data[i][j] += delta;
+        }
+    }
+    record(label + " => " + toString());
+}
+
+Matrix& Matrix::operator++()
+{
+    shiftAll(+1.0, "++ (префикс)");
+    return *this;
+}
+
+Matrix Matrix::operator++(int)
+{
+    Matrix old(*this);               // запоминаем значение ДО изменения
+    shiftAll(+1.0, "++ (постфикс)");
+    return old;
+}
+
+Matrix& Matrix::operator--()
+{
+    shiftAll(-1.0, "-- (префикс)");
+    return *this;
+}
+
+Matrix Matrix::operator--(int)
+{
+    Matrix old(*this);
+    shiftAll(-1.0, "-- (постфикс)");
+    return old;
+}
