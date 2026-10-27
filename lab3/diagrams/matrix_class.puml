@@ -1,0 +1,80 @@
+@startuml matrix_class
+title Диаграмма классов: матричный калькулятор 2x2 (Matrix)
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+
+class Matrix {
+  - data : double[2][2]
+  - {static} MAX_HISTORY : int = 32
+  - history : std::string[MAX_HISTORY] <<mutable>>
+  - historyCount : int <<mutable>>
+  - historyTotal : int <<mutable>>
+  - accessCount : int <<mutable>>
+  - {static} objectCount : int
+  - record(text : const std::string&) : void <<const>>
+  - shiftAll(delta : double, label : const std::string&) : void
+  - toString() : std::string <<const>>
+  __ Конструкторы / деструктор __
+  + Matrix()
+  + Matrix(a : double, b : double, c : double, d : double)
+  + <<explicit>> Matrix(scalar : double)
+  + Matrix(other : const Matrix&)
+  + operator=(other : const Matrix&) : Matrix& <<default>>
+  + ~Matrix()
+  __ Методы чтения (const) __
+  + at(row : int, col : int) : double
+  + determinant() : double
+  + isInvertible() : bool
+  + getAccessCount() : int
+  + getHistorySize() : int
+  + getHistoryTotal() : int
+  + compareByDeterminant(other : const Matrix&) : int
+  + printHistory() : void
+  + <<explicit>> operator bool() : bool
+  __ Унарные операторы __
+  + operator++() : Matrix&
+  + operator++(int) : Matrix
+  + operator--() : Matrix&
+  + operator--(int) : Matrix
+  __ Арифметическое присваивание __
+  + operator+=(rhs : const Matrix&) : Matrix&
+  + operator-=(rhs : const Matrix&) : Matrix&
+  + operator*=(rhs : const Matrix&) : Matrix&
+  + operator/=(rhs : const Matrix&) : Matrix&
+  __ Статика __
+  + {static} getObjectCount() : int
+}
+
+class "Свободные операторы" as FreeOps <<free functions>> {
+  + operator+(lhs : Matrix, rhs : const Matrix&) : Matrix
+  + operator-(lhs : Matrix, rhs : const Matrix&) : Matrix
+  + operator*(lhs : Matrix, rhs : const Matrix&) : Matrix
+  + operator/(lhs : Matrix, rhs : const Matrix&) : Matrix
+  + operator<(lhs : const Matrix&, rhs : const Matrix&) : bool
+  + operator>(lhs : const Matrix&, rhs : const Matrix&) : bool
+  + operator<=(lhs : const Matrix&, rhs : const Matrix&) : bool
+  + operator>=(lhs : const Matrix&, rhs : const Matrix&) : bool
+  + operator==(lhs : const Matrix&, rhs : const Matrix&) : bool
+  + operator!=(lhs : const Matrix&, rhs : const Matrix&) : bool
+  + operator<<(os : std::ostream&, m : const Matrix&) : std::ostream&
+}
+
+FreeOps ..> Matrix : использует
+
+note right of FreeOps
+  **Арифметические** операторы принимают левый
+  операнд по значению и вызывают +=, -=, *=, /=.
+  **Сравнения** вызывают compareByDeterminant().
+end note
+
+note bottom of Matrix
+  **Правила:**
+  1. Деление A / B = A * B^(-1); при det(B) = 0 операция отклоняется
+  2. Сравнение матриц — по определителю (допуск 1e-9)
+  3. explicit запрещает неявные double -> Matrix и Matrix -> bool
+  4. mutable-поля меняются даже у const-объекта
+  5. История — массив на 32 записи, без vector; старые записи вытесняются
+end note
+
+@enduml
