@@ -160,3 +160,87 @@ void Matrix::printHistory() const
                   << ". " << history[i] << std::endl;
     }
 }
+
+Matrix& Matrix::operator+=(const Matrix& rhs)
+{
+    for (int i = 0; i < 2; ++i)
+    {
+        for (int j = 0; j < 2; ++j)
+        {
+            data[i][j] += rhs.data[i][j];
+        }
+    }
+    record("+= " + rhs.toString() + " => " + toString());
+    return *this;
+}
+
+Matrix& Matrix::operator-=(const Matrix& rhs)
+{
+    for (int i = 0; i < 2; ++i)
+    {
+        for (int j = 0; j < 2; ++j)
+        {
+            data[i][j] -= rhs.data[i][j];
+        }
+    }
+    record("-= " + rhs.toString() + " => " + toString());
+    return *this;
+}
+
+Matrix& Matrix::operator*=(const Matrix& rhs)
+{
+    // Результат считаем во временном массиве: так работает и A *= A.
+    double r[2][2];
+    for (int i = 0; i < 2; ++i)
+    {
+        for (int j = 0; j < 2; ++j)
+        {
+            r[i][j] = data[i][0] * rhs.data[0][j] + data[i][1] * rhs.data[1][j];
+        }
+    }
+    for (int i = 0; i < 2; ++i)
+    {
+        for (int j = 0; j < 2; ++j)
+        {
+            data[i][j] = r[i][j];
+        }
+    }
+    record("*= " + rhs.toString() + " => " + toString());
+    return *this;
+}
+
+Matrix& Matrix::operator/=(const Matrix& rhs)
+{
+    double det = rhs.determinant();
+    if (nearlyEqual(det, 0.0))
+    {
+        std::cout << "Ошибка: деление на вырожденную матрицу (det = 0), "
+                     "операция отклонена." << std::endl;
+        record("/= " + rhs.toString() + " отклонено (det = 0)");
+        return *this;
+    }
+
+    // Обратная матрица: (1 / det) * [[d, -b], [-c, a]]
+    double inv[2][2] = {
+        { rhs.data[1][1] / det, -rhs.data[0][1] / det},
+        {-rhs.data[1][0] / det,  rhs.data[0][0] / det}
+    };
+
+    double r[2][2];
+    for (int i = 0; i < 2; ++i)
+    {
+        for (int j = 0; j < 2; ++j)
+        {
+            r[i][j] = data[i][0] * inv[0][j] + data[i][1] * inv[1][j];
+        }
+    }
+    for (int i = 0; i < 2; ++i)
+    {
+        for (int j = 0; j < 2; ++j)
+        {
+            data[i][j] = r[i][j];
+        }
+    }
+    record("/= " + rhs.toString() + " => " + toString());
+    return *this;
+}
