@@ -89,5 +89,71 @@ int main()
     std::cout << "A != F : " << (A != F) << std::endl;
     std::cout << "A != B : " << (A != B) << std::endl;
 
+    // ===== 6. explicit: защита от нежелательных неявных преобразований
+    std::cout << std::endl << "=== 6. explicit ===" << std::endl;
+    std::cout << "double -> Matrix неявно:  "
+              << std::is_convertible<double, Matrix>::value << std::endl;
+    std::cout << "double -> Matrix явно:    "
+              << std::is_constructible<Matrix, double>::value << std::endl;
+    std::cout << "Matrix -> bool неявно:    "
+              << std::is_convertible<Matrix, bool>::value << std::endl;
+    std::cout << "Matrix -> bool явно:      "
+              << std::is_constructible<bool, Matrix>::value << std::endl;
+
+    // Следующие строки НЕ компилируются именно из-за explicit:
+    // Matrix m = 5.0;           // ошибка: неявное double -> Matrix запрещено
+    // Matrix bad = A + 2.0;     // ошибка: 2.0 не превращается в Matrix сам
+    // bool b = A;               // ошибка: неявное Matrix -> bool запрещено
+
+    Matrix R = A + Matrix(2.0);  // правильно: преобразование записано явно
+    std::cout << "A + Matrix(2.0) = " << R << std::endl;
+    if (A)
+    {
+        std::cout << "if (A): A невырождена (det != 0)" << std::endl;
+    }
+    std::cout << "static_cast<bool>(Z) = " << static_cast<bool>(Z)
+              << " (нулевая матрица вырождена)" << std::endl;
+
+    // ===== 7. const-объект и mutable-поля
+    std::cout << std::endl << "=== 7. const-объект и mutable ===" << std::endl;
+    const Matrix K(5, 6, 7, 9);
+    std::cout << "K = " << K << " (const)" << std::endl;
+    std::cout << "Обращений к K до: " << K.getAccessCount() << std::endl;
+    K.determinant();
+    K.at(0, 1);
+    bool less = (K < A);
+    std::cout << "K < A = " << less << std::endl;
+    std::cout << "Обращений к K после: " << K.getAccessCount()
+              << " (счётчик изменился, хотя объект const)" << std::endl;
+
+    // ===== 8. История операций
+    std::cout << std::endl << "=== 8. История операций ===" << std::endl;
+    std::cout << "История матрицы C:" << std::endl;
+    C.printHistory();
+    std::cout << std::endl << "История const-матрицы K (запись о сравнении добавлена через mutable):" << std::endl;
+    K.printHistory();
+
+    std::cout << std::endl << "Переполнение истории (массив рассчитан на 32 записи):" << std::endl;
+    {
+        Matrix big;
+        for (int i = 0; i < 40; ++i)
+        {
+            ++big;
+        }
+        std::cout << "Записано операций: " << big.getHistoryTotal()
+                  << ", хранится: " << big.getHistorySize() << std::endl;
+        std::cout << "Матрица после 40 инкрементов: " << big << std::endl;
+    }
+
+    // ===== 9. Деструктор и статический счётчик
+    std::cout << std::endl << "=== 9. Деструктор и статический счётчик ===" << std::endl;
+    std::cout << "Объектов до блока:    " << Matrix::getObjectCount() << std::endl;
+    {
+        Matrix temp(9, 9, 9, 9);
+        std::cout << "Объектов внутри блока: " << Matrix::getObjectCount() << std::endl;
+    }
+    std::cout << "Объектов после блока: " << Matrix::getObjectCount() << std::endl;
+
+    std::cout << std::endl << "Конец main(): сейчас будут уничтожены все матрицы." << std::endl;
     return 0;
 }
