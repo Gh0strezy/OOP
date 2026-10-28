@@ -1,0 +1,84 @@
+```plantuml
+@startuml
+title UML-диаграмма класса Matrix
+
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+class Matrix {
+    - {static} MAX_HISTORY : int = 32
+    - data : double[2][2]
+    - {mutable} history : string[32]
+    - {mutable} historyCount : int
+    - {mutable} historyTotal : int
+    - {mutable} accessCount : int
+    - {static} objectCount : int
+
+    --
+    + Matrix()
+    + Matrix(a : double, b : double, c : double, d : double)
+    + {static} Matrix(scalar : double)
+    + Matrix(other : Matrix)
+    + ~Matrix()
+
+    --
+    + operator=(other : Matrix) : Matrix&
+    + at(row : int, col : int) : double
+    + determinant() : double
+    + isInvertible() : bool
+    + getAccessCount() : int
+    + getHistorySize() : int
+    + getHistoryTotal() : int
+    + compareByDeterminant(other : Matrix) : int
+    + printHistory() : void
+    + operator bool() : bool
+
+    --
+    + operator++() : Matrix&
+    + operator++(int) : Matrix
+    + operator--() : Matrix&
+    + operator--(int) : Matrix
+
+    --
+    + operator+=(rhs : Matrix) : Matrix&
+    + operator-=(rhs : Matrix) : Matrix&
+    + operator*=(rhs : Matrix) : Matrix&
+    + operator/=(rhs : Matrix) : Matrix&
+
+    --
+    - record(text : string) : void
+    - shiftAll(delta : double, label : string) : void
+    - toString() : string
+    --
+    + {static} getObjectCount() : int
+}
+
+class "Свободные операторы" as FreeOperators {
+    + operator+(lhs : Matrix, rhs : Matrix) : Matrix
+    + operator-(lhs : Matrix, rhs : Matrix) : Matrix
+    + operator*(lhs : Matrix, rhs : Matrix) : Matrix
+    + operator/(lhs : Matrix, rhs : Matrix) : Matrix
+
+    + operator<(lhs : Matrix, rhs : Matrix) : bool
+    + operator>(lhs : Matrix, rhs : Matrix) : bool
+    + operator<=(lhs : Matrix, rhs : Matrix) : bool
+    + operator>=(lhs : Matrix, rhs : Matrix) : bool
+    + operator==(lhs : Matrix, rhs : Matrix) : bool
+    + operator!=(lhs : Matrix, rhs : Matrix) : bool
+
+    + operator<<(os : ostream, m : Matrix) : ostream&
+}
+
+FreeOperators ..> Matrix : использует
+
+note right of Matrix
+  Матрица размером 2×2.
+  Сравнение выполняется по определителю.
+  Деление реализовано через обратную матрицу.
+  История хранит до 32 операций.
+  При переполнении удаляется
+  самая старая запись.
+end note
+
+@enduml
+```
