@@ -1,0 +1,37 @@
+# Doxygen configuration for lab4
+
+# Project settings
+PROJECT_NAME           = "Lab4: Транспортные средства"
+PROJECT_NUMBER         = "Вариант 2"
+PROJECT_BRIEF          = "Иерархия классов с множественным наследованием"
+OUTPUT_DIRECTORY       = docs
+CREATE_SUBDIRS         = NO
+
+# Build settings
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+RECURSIVE              = YES
+
+# Input settings
+INPUT                  = include src tests README.md
+FILE_PATTERNS          = *.h *.cpp *.md
+EXCLUDE_PATTERNS       = */build/*
+
+# Output settings
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+HTML_OUTPUT            = html
+HTML_FILE_EXTENSION    = .html
+
+# Diagrams
+HAVE_DOT               = YES
+CALL_GRAPH             = YES
+CALLER_GRAPH           = YES
+CLASS_DIAGRAMS         = YES
+UML_LOOK               = YES
+
+# Other settings
+JAVADOC_AUTOBRIEF      = YES
+OPTIMIZE_OUTPUT_FOR_C  = NO
+BUILTIN_STL_SUPPORT    = YES
