@@ -1,0 +1,9 @@
+Car;Toyota Camry;220;4;1500;5;3
+Car;Honda Accord;230;4;1550;5;2
+Car;BMW 5 Series;250;4;1700;5;0
+Truck;Volvo FH;140;18;12000;20000;15000
+Truck;MAN TGX;150;18;11500;18000;10000
+Truck;Scania R500;160;18;13000;22000;0
+Minivan;Mercedes-Benz Vito;180;4;2200;7;4;800;500
+Minivan;Volkswagen Transporter;170;4;2100;9;6;1000;700
+Minivan;Ford Transit;160;4;2400;8;5;1200;800

@@ -1,0 +1,154 @@
+@startuml vehicles_hierarchy
+
+' Настройки стиля
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+
+' Абстрактный базовый класс
+abstract class Vehicle {
+  # maxSpeed_ : double
+  - {static} globalMaxSpeed_ : double
+  - {static} objectCount_ : int
+  __
+  # Vehicle(maxSpeed : double)
+  # Vehicle(other : Vehicle&)
+  # operator=(other : Vehicle&) : Vehicle&
+  # updateMaxSpeed(speed : double) : void
+  + {abstract} startEngine() : string
+  + {abstract} move() : string
+  + {abstract} getType() : string
+  + getInfo() : string
+  + {static} getMaxSpeed() : double
+  + {static} resetMaxSpeed() : void
+  + {static} getObjectCount() : int
+  + ~Vehicle()
+}
+
+' Промежуточный класс (виртуальное наследование)
+class LandVehicle {
+  # wheelCount_ : int
+  # mass_ : double
+  __
+  # LandVehicle(maxSpeed, wheelCount, mass)
+  # LandVehicle(other : LandVehicle&)
+  # operator=(other : LandVehicle&) : LandVehicle&
+  + getWheelCount() : int
+  + getMass() : double
+  + getInfo() : string
+  + serialize() : string
+  + ~LandVehicle()
+}
+
+' Интерфейс для пассажирских перевозок
+interface IPassengerCarrier {
+  + {abstract} getPassengerCapacity() : int
+  + {abstract} boardPassengers(count : int) : bool
+  + {abstract} unboardPassengers(count : int) : bool
+  + {abstract} getCurrentPassengers() : int
+}
+
+' Интерфейс для грузовых перевозок
+interface ICargoCarrier {
+  + {abstract} getCargoCapacity() : double
+  + {abstract} loadCargo(weight : double) : bool
+  + {abstract} unloadCargo(weight : double) : bool
+  + {abstract} getCurrentCargo() : double
+}
+
+' Класс легкового автомобиля
+class Car {
+  - brand_ : string
+  - passengerCapacity_ : int
+  - currentPassengers_ : int
+  __
+  + Car(brand, maxSpeed, wheelCount, mass, passengerCapacity)
+  + Car(other : Car&)
+  + operator=(other : Car&) : Car&
+  + startEngine() : string
+  + move() : string
+  + getType() : string
+  + getInfo() : string
+  + getBrand() : string
+  + getPassengerCapacity() : int
+  + boardPassengers(count : int) : bool
+  + unboardPassengers(count : int) : bool
+  + getCurrentPassengers() : int
+  + serialize() : string
+  + {static} deserialize(data : string) : Car*
+  + ~Car()
+}
+
+' Класс грузовика
+class Truck {
+  - brand_ : string
+  - cargoCapacity_ : double
+  - currentCargo_ : double
+  __
+  + Truck(brand, maxSpeed, wheelCount, mass, cargoCapacity)
+  + Truck(other : Truck&)
+  + operator=(other : Truck&) : Truck&
+  + startEngine() : string
+  + move() : string
+  + getType() : string
+  + getInfo() : string
+  + getBrand() : string
+  + getCargoCapacity() : double
+  + loadCargo(weight : double) : bool
+  + unloadCargo(weight : double) : bool
+  + getCurrentCargo() : double
+  + serialize() : string
+  + {static} deserialize(data : string) : Truck*
+  + ~Truck()
+}
+
+' Класс минивэна (множественное наследование)
+class Minivan {
+  - cargoCapacity_ : double
+  - currentCargo_ : double
+  __
+  + Minivan(brand, maxSpeed, wheelCount, mass, passengerCapacity, cargoCapacity)
+  + Minivan(other : Minivan&)
+  + operator=(other : Minivan&) : Minivan&
+  + startEngine() : string
+  + move() : string
+  + getType() : string
+  + getInfo() : string
+  + getCargoCapacity() : double
+  + loadCargo(weight : double) : bool
+  + unloadCargo(weight : double) : bool
+  + getCurrentCargo() : double
+  + serialize() : string
+  + {static} deserialize(data : string) : Minivan*
+  + ~Minivan()
+}
+
+' Отношения наследования
+Vehicle <|-- LandVehicle : <<virtual>>
+LandVehicle <|-- Car
+LandVehicle <|-- Truck
+Car <|-- Minivan
+
+' Реализация интерфейсов
+IPassengerCarrier <|.. Car
+ICargoCarrier <|.. Truck
+ICargoCarrier <|.. Minivan
+
+' Дружественная функция
+class " " as Friend {
+  + isHeavier(lv1, lv2) : bool
+}
+Friend .. LandVehicle : <<friend>>
+
+' Легенда
+legend right
+  **Иерархия транспортных средств**
+  
+  Виртуальное наследование Vehicle
+  решает проблему "алмаза" в Minivan
+  
+  Minivan демонстрирует
+  множественное наследование
+endlegend
+
+@enduml
